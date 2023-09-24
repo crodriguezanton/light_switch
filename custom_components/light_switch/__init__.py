@@ -14,7 +14,6 @@ from homeassistant.const import CONF_ENTITY_ID
 from homeassistant.core import Event, HomeAssistant, callback
 from homeassistant.helpers import device_registry as dr, entity_registry as er
 from homeassistant.helpers.event import async_track_entity_registry_updated_event
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .const import CONF_SWITCH_ENTITY_ID
 from .light import LightSwitch

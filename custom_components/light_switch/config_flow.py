@@ -1,9 +1,9 @@
 """Adds config flow for LightSwitch."""
 from __future__ import annotations
-from typing import Any, Mapping
+from typing import Any
+from collections.abc import Mapping
 
 import voluptuous as vol
-from homeassistant import config_entries
 from homeassistant.const import CONF_ENTITY_ID, Platform
 from homeassistant.helpers import selector, entity_registry as er
 from homeassistant.helpers.schema_config_entry_flow import (
