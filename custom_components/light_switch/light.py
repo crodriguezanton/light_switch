@@ -6,7 +6,7 @@ import logging
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import Event, HomeAssistant, callback
-from homeassistant.helpers import entity_registry as er
+from homeassistant.helpers import entity_registry as er, start
 from homeassistant.helpers.event import async_track_state_change_event
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
@@ -153,6 +153,12 @@ class LightSwitch(LightEntity):
             self.async_set_context(event.context)
             self.async_defer_or_update_ha_state()
 
+        async def _update_at_start(_):
+            self.async_update_group_state()
+            self.async_write_ha_state()
+
+        self.async_on_remove(start.async_at_start(self.hass, _update_at_start))
+
         self.async_on_remove(
             async_track_state_change_event(
                 self.hass,
@@ -172,16 +178,6 @@ class LightSwitch(LightEntity):
         switch_data = {ATTR_ENTITY_ID: self._switch_entity_id}
 
         switch_state = self.hass.states.get(self._switch_entity_id)
-
-        _LOGGER.debug(
-            "Forwarded turn_on command to switch (%s): %s",
-            switch_state.state,
-            switch_data,
-        )
-        _LOGGER.debug(
-            "Forwarded turn_on command to lights: %s",
-            light_data,
-        )
 
         if switch_state.state != STATE_ON:
             await self.hass.services.async_call(
@@ -227,19 +223,19 @@ class LightSwitch(LightEntity):
         _LOGGER.debug("Switch State %s", switch_state.as_dict())
         _LOGGER.debug("Light State %s", light_state.as_dict())
 
-        valid_state = all(
-            state.state not in (STATE_UNKNOWN, STATE_UNAVAILABLE)
-            for state in [switch_state, light_state]
-        )
+        # valid_state = all(
+        #     state.state not in (STATE_UNKNOWN, STATE_UNAVAILABLE)
+        #     for state in [switch_state, light_state]
+        # )
 
-        if not valid_state:
-            # Set as unknown if any / all member is unknown or unavailable
-            self._attr_is_on = None
-        else:
-            # self._attr_is_on = all(state.state == STATE_ON for state in states)
-            self._attr_is_on = switch_state.state == STATE_ON
+        # if not valid_state:
+        #     # Set as unknown if any / all member is unknown or unavailable
+        #     self._attr_is_on = None
+        # else:
+        #     self._attr_is_on = all(state.state == STATE_ON for state in states)
+        self._attr_is_on = switch_state.state == STATE_ON
 
-        self._attr_available = all(state.state != STATE_UNAVAILABLE for state in states)
+        self._attr_available = any(state.state != STATE_UNAVAILABLE for state in states)
         self._attr_brightness = light_state.attributes.get(ATTR_BRIGHTNESS)
 
         self._attr_hs_color = light_state.attributes.get(ATTR_HS_COLOR)
@@ -259,52 +255,15 @@ class LightSwitch(LightEntity):
         self._attr_max_mireds = light_state.attributes.get(ATTR_MAX_MIREDS)
 
         self._attr_effect_list = light_state.attributes.get(ATTR_EFFECT_LIST)
-        # all_effect_lists = list(find_state_attributes(states, ATTR_EFFECT_LIST))
-        # if all_effect_lists:
-        #     # Merge all effects from all effect_lists with a union merge.
-        #     self._attr_effect_list = list(set().union(*all_effect_lists))
-        #     self._attr_effect_list.sort()
-        #     if "None" in self._attr_effect_list:
-        #         self._attr_effect_list.remove("None")
-        #         self._attr_effect_list.insert(0, "None")
 
         self._attr_effect = light_state.attributes.get(ATTR_EFFECT)
-        # all_effects = list(find_state_attributes(on_states, ATTR_EFFECT))
-        # if all_effects:
-        #     # Report the most common effect.
-        #     effects_count = Counter(itertools.chain(all_effects))
-        #     self._attr_effect = effects_count.most_common(1)[0][0]
 
         self._attr_color_mode = light_state.attributes.get(ATTR_COLOR_MODE)
-        # all_color_modes = list(find_state_attributes(on_states, ATTR_COLOR_MODE))
-        # if all_color_modes:
-        #     # Report the most common color mode, select brightness and onoff last
-        #     color_mode_count = Counter(itertools.chain(all_color_modes))
-        #     if ColorMode.ONOFF in color_mode_count:
-        #         color_mode_count[ColorMode.ONOFF] = -1
-        #     if ColorMode.BRIGHTNESS in color_mode_count:
-        #         color_mode_count[ColorMode.BRIGHTNESS] = 0
-        #     self._attr_color_mode = color_mode_count.most_common(1)[0][0]
 
         self._attr_supported_color_modes = light_state.attributes.get(
             ATTR_SUPPORTED_COLOR_MODES
         )
-        # all_supported_color_modes = list(
-        #     find_state_attributes(states, ATTR_SUPPORTED_COLOR_MODES)
-        # )
-        # if all_supported_color_modes:
-        #     # Merge all color modes.
-        #     self._attr_supported_color_modes = cast(
-        #         set[str], set().union(*all_supported_color_modes)
-        #     )
 
         self._attr_supported_features = light_state.attributes.get(
             ATTR_SUPPORTED_FEATURES
         )
-        # for support in find_state_attributes(states, ATTR_SUPPORTED_FEATURES):
-        #     # Merge supported features by emulating support for every feature
-        #     # we find.
-        #     self._attr_supported_features |= support
-        # # Bitwise-and the supported features with the GroupedLight's features
-        # # so that we don't break in the future when a new feature is added.
-        # self._attr_supported_features &= SUPPORT_GROUP_LIGHT

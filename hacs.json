@@ -1,5 +1,5 @@
 {
-    "name": "Integration light switch",
+    "name": "Light switch",
     "filename": "light_switch.zip",
     "hide_default_branch": true,
     "homeassistant": "2023.3.0",
