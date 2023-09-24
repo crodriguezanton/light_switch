@@ -39,7 +39,6 @@ from homeassistant.const import (
     SERVICE_TURN_ON,
     STATE_ON,
     STATE_UNAVAILABLE,
-    STATE_UNKNOWN,
 )
 
 from .const import CONF_SWITCH_ENTITY_ID
@@ -73,8 +72,6 @@ async def async_setup_entry(
     entity_id = er.async_validate_entity_id(
         registry, config_entry.options[CONF_ENTITY_ID]
     )
-    wrapped_switch = registry.async_get(entity_id)
-    device_id = wrapped_switch.device_id if wrapped_switch else None
 
     async_add_entities(
         [
@@ -86,13 +83,6 @@ async def async_setup_entry(
             )
         ]
     )
-
-
-# class NotALightSwitch(BaseToggleEntity, LightEntity):
-#     """Represents a Switch as a Light."""
-
-#     _attr_color_mode = ColorMode.ONOFF
-#     _attr_supported_color_modes = {ColorMode.ONOFF}
 
 
 class LightSwitch(LightEntity):
@@ -223,19 +213,9 @@ class LightSwitch(LightEntity):
         _LOGGER.debug("Switch State %s", switch_state.as_dict())
         _LOGGER.debug("Light State %s", light_state.as_dict())
 
-        # valid_state = all(
-        #     state.state not in (STATE_UNKNOWN, STATE_UNAVAILABLE)
-        #     for state in [switch_state, light_state]
-        # )
-
-        # if not valid_state:
-        #     # Set as unknown if any / all member is unknown or unavailable
-        #     self._attr_is_on = None
-        # else:
-        #     self._attr_is_on = all(state.state == STATE_ON for state in states)
         self._attr_is_on = switch_state.state == STATE_ON
-
         self._attr_available = any(state.state != STATE_UNAVAILABLE for state in states)
+
         self._attr_brightness = light_state.attributes.get(ATTR_BRIGHTNESS)
 
         self._attr_hs_color = light_state.attributes.get(ATTR_HS_COLOR)
