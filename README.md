@@ -42,7 +42,7 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 ***
 
 [light_switch]: https://github.com/crodriguezanton/light_switch
-[buymecoffee]: https://www.buymeacoffee.com/ludeeus
+[buymecoffee]: https://www.buymeacoffee.com/crodriguezanton
 [buymecoffeebadge]: https://img.shields.io/badge/buy%20me%20a%20coffee-donate-yellow.svg?style=for-the-badge
 [commits-shield]: https://img.shields.io/github/commit-activity/y/crodriguezanton/light_switch.svg?style=for-the-badge
 [commits]: https://github.com/crodriguezanton/light_switch/commits/main
@@ -54,6 +54,6 @@ If you want to contribute to this please read the [Contribution guidelines](CONT
 [forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
 [forum]: https://community.home-assistant.io/
 [license-shield]: https://img.shields.io/github/license/crodriguezanton/light_switch.svg?style=for-the-badge
-[maintenance-shield]: https://img.shields.io/badge/maintainer-Joakim%20Sørensen%20%40ludeeus-blue.svg?style=for-the-badge
+[maintenance-shield]: https://img.shields.io/badge/maintainer-Carlos%20Rodriguez%20@crodriguezanton-blue.svg?style=for-the-badge
 [releases-shield]: https://img.shields.io/github/release/crodriguezanton/light_switch.svg?style=for-the-badge
 [releases]: https://github.com/crodriguezanton/light_switch/releases
