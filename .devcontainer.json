@@ -1,5 +1,5 @@
 {
-    "name": "crodriguezanton/integration_light_switch",
+    "name": "crodriguezanton/light_switch",
     "image": "mcr.microsoft.com/vscode/devcontainers/python:0-3.10-bullseye",
     "postCreateCommand": "scripts/setup",
     "forwardPorts": [

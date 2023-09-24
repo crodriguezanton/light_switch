@@ -1,0 +1,13 @@
+{
+  "domain": "light_switch",
+  "name": "Light Switch",
+  "integration_type": "helper",
+  "codeowners": [
+    "@crodriguezanton"
+  ],
+  "config_flow": true,
+  "documentation": "https://github.com/crodriguezanton/light_switch",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/crodriguezanton/light_switch/issues",
+  "version": "0.0.0"
+}

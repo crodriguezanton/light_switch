@@ -48,7 +48,7 @@ Use [black](https://github.com/ambv/black) to make sure the code follows the sty
 
 ## Test your code modification
 
-This custom component is based on [integration_light_switch template](https://github.com/crodriguezanton/integration_light_switch).
+This custom component is based on [light_switch template](https://github.com/crodriguezanton/light_switch).
 
 It comes with development environment in a container, easy to launch
 if you use Visual Studio Code. With this container you will have a stand alone

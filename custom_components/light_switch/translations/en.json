@@ -2,10 +2,10 @@
     "config": {
         "step": {
             "user": {
-                "description": "If you need help with the configuration have a look here: https://github.com/crodriguezanton/integration_light_switch",
+                "description": "Choose a light and a switch you want to manage together.",
                 "data": {
-                    "username": "Username",
-                    "password": "Password"
+                    "entity_id": "Light",
+                    "switch_entity_id": "Switch"
                 }
             }
         },

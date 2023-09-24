@@ -5,4 +5,10 @@ default_config:
 logger:
   default: info
   logs:
-    custom_components.integration_light_switch: debug
+    custom_components.light_switch: debug
+
+light:
+  - platform: demo
+
+switch:
+  - platform: demo
